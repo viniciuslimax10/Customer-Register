@@ -1,7 +1,9 @@
 import React from "react";
+
+
 import {
-  BrowserRouter,
-  Routes,
+  BrowserRouter as Router,
+  Switch,
   Route
 } from "react-router-dom";
 import Customer from "./pages/Customer";
@@ -10,14 +12,15 @@ import EditCustomer from "./pages/EditCustomer";
 
 function App() {
   return (
-    <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Customer />}/>
-      <Route path="/add-customer" element={<AddCustomer />}/>
-      <Route path="/edit-customer/:id" element={<EditCustomer />}/>
-    </Routes>
-  </BrowserRouter>
+    <Router>
+    <Switch>
+      <Route exact path="/" component={Customer}/>
+      <Route path="/add-customer" component={AddCustomer}/>
+      <Route path="/edit-customer/:id" component={EditCustomer} exact/>
+    </Switch>
+  </Router>
   );
 }
+
 
 export default App;

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import swal from 'sweetalert';
+
 
 class AddCustomer extends Component{
     state={
@@ -9,6 +11,7 @@ class AddCustomer extends Component{
         address:'',
         email:'',
         phone:'',
+       
     }
 
     handleInput =(e) => {
@@ -22,9 +25,15 @@ class AddCustomer extends Component{
 
         const res = await axios.post("http://localhost:8000/api/add-customer",this.state);
 
+        console.log(res);
         if(res.data.status === 200)
         {
-            console.log(res.data.message);
+            swal({
+                title: "Success!",
+                text: "Customer Created!",
+                icon: "success",
+                button: "Finish!",
+              });
             this.setState({
                 name:'',
                 company:'',
@@ -33,6 +42,7 @@ class AddCustomer extends Component{
                 phone:'',
             })
         }
+       
     }
 
     render(){
@@ -49,24 +59,26 @@ class AddCustomer extends Component{
                                 <form onSubmit={this.saveCustomer}>
                                     <div className="form-group mb-3">
                                         <label>Full Name</label>
-                                        <input type="text" name="name" onChange={this.handleInput} value={this.state.name}  className="form-control"></input>
+                                        <input type="text" name="name" onChange={this.handleInput} value={this.state.name}  className="form-control" required></input>
                                     </div>
                                     <div className="form-group mb-3">
                                         <label>Company Name</label>
-                                        <input type="text" name="company" onChange={this.handleInput} value={this.state.company}  className="form-control"></input>
+                                        <input type="text" name="company" onChange={this.handleInput} value={this.state.company}  className="form-control"required ></input>
+                                        
                                     </div>
                                     <div className="form-group mb-3">
                                         <label>Address</label>
-                                        <input type="text" name="address" onChange={this.handleInput} value={this.state.address}  className="form-control"></input>
+                                        <input type="text" name="address" onChange={this.handleInput} value={this.state.address}  className="form-control" required></input>
+                                        
                                     </div>
                                     <div className="form-group mb-3">
                                         <label>E-mail</label>
-                                        <input type="email" name="email" onChange={this.handleInput} value={this.state.email}  className="form-control"></input>
-                                    </div>
+                                        <input type="email" name="email" onChange={this.handleInput} value={this.state.email}  className="form-control" required></input>
+                                                                           </div>
                                     <div className="form-group mb-3">
                                         <label>Phone Number</label>
-                                        <input type="text" name="phone" onChange={this.handleInput} value={this.state.phone}  className="form-control"></input>
-                                    </div>
+                                        <input type="text" name="phone" onChange={this.handleInput} value={this.state.phone}  className="form-control" required></input>
+                                                                           </div>
                                     <div className="form-group mb-3">
                                        <button type="submit" className="btn btn-primary"> Save Customer</button>
                                     </div>

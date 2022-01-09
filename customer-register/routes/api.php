@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/customers',[CustomerController::class,'list']);
 Route::post('/add-customer',[CustomerController::class,'store']);
+Route::get('/edit-customer/{id}',[CustomerController::class,'edit']);
+Route::put('/update-customer/{id}',[CustomerController::class,'update']);
+Route::delete('/delete-customer/{id}',[CustomerController::class,'delete']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

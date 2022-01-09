@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import { Link ,useParams } from 'react-router-dom';
 import axios from 'axios';
-
-
+import { useState, useEffect } from 'react';
+import swal from 'sweetalert';
 
 class EditCustomer extends Component{
     
@@ -18,36 +18,55 @@ class EditCustomer extends Component{
         this.setState({
             [e.target.name]: e.target.value
         })
+       
     }
 
-  
+    
 
     async componentDidMount(){
-        const id = this.props.match.params.id;
-       
-        console.log(id);
+       const customerId = this.props.match.params.id;
+    //    console.log(id);
+       const res= await axios.get(`http://localhost:8000/api/edit-customer/${customerId}`);
+       if(res.data.status===200){
+           this.setState({
+            name:res.data.customer.name,
+            company:res.data.customer.company,
+            address:res.data.customer.address,
+            email:res.data.customer.email,
+            phone:res.data.customer.phone,
+           })
+       }
     }
 
+   
+
     updateCustomer =  async (e) =>{
-       
         e.preventDefault();
+        
+        document.getElementById("updatebtn").disabled=true;
+        document.getElementById("updatebtn").innerText = "Updating"
+        const customerId = this.props.match.params.id;
+        const res = await axios.put(`http://localhost:8000/api/update-customer/${customerId}`,this.state);
 
-        // const res = await axios.post("http://localhost:8000/api/add-customer",this.state);
-
-        // if(res.data.status === 200)
-        // {
-        //     console.log(res.data.message);
-        //     this.setState({
-        //         name:'',
-        //         company:'',
-        //         address:'',
-        //         email:'',
-        //         phone:'',
-        //     })
-        // }
+        if(res.data.status === 200)
+        {
+            swal({
+                title: "Edited!",
+                text: "Customer Edited!",
+                icon: "success",
+                button: "Finish!",
+              });
+            document.getElementById("updatebtn").innerText = "Edit Customer";
+            document.getElementById("updatebtn").disabled=false;
+        }
     }
 
     render(){
+        function Invoice() {
+            let params = useParams();
+            return <h1>Invoice {params.id}</h1>;
+           
+          }
         
         return(
             <div className="container">
@@ -81,7 +100,7 @@ class EditCustomer extends Component{
                                         <input type="text" name="phone" onChange={this.handleInput} value={this.state.phone}  className="form-control"></input>
                                     </div>
                                     <div className="form-group mb-3">
-                                       <button type="submit" className="btn btn-primary"> Edit Customer</button>
+                                       <button type="submit" id="updatebtn" className="btn btn-primary"> Edit Customer</button>
                                     </div>
                                 </form>
                             </div>
@@ -93,5 +112,6 @@ class EditCustomer extends Component{
         )
     }
 }
+
 
 export default EditCustomer;

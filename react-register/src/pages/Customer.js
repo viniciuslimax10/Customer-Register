@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
+import swal from 'sweetalert';
 class Customer extends Component{
 
     state={
@@ -21,6 +21,22 @@ class Customer extends Component{
         }
     }
 
+    deleteCustomer = async (e , id) =>{
+        const thisClicked = e.currentTarget;
+        thisClicked.innerText="Deleting";
+        const res =  await axios.delete(`http://localhost:8000/api/delete-customer/${id}`);
+        if(res.data.status === 200)
+        {
+            
+            thisClicked.closest("tr").remove();
+            swal({
+                title: "Deleted!",
+                text: "Customer Deleted!",
+                icon: "success",
+                button: "Finish!",
+              });
+        }
+    }
 
     render(){
         var customerTable="";
@@ -37,11 +53,11 @@ class Customer extends Component{
                         <td>{item.id}</td>
                         <td>{item.name}</td>
                         <td>{item.company}</td>
-                        <td>{item.addres}</td>
+                        <td>{item.address}</td>
                         <td>{item.email}</td>
                         <td>{item.phone}</td>
                         <td><Link to={`edit-customer/${item.id}`} className="btn btn-success btn-sm">Edit</Link></td>
-                        <td><button type="button" className="btn btn-danger btn-sm">Delete</button></td>
+                        <td><button type="button" onClick={(e) => this.deleteCustomer(e,item.id)} className="btn btn-danger btn-sm">Delete</button></td>
                     </tr>
                 )
             })
