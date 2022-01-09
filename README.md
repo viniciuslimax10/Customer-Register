@@ -18,7 +18,7 @@
 
 The objective of this project is allows people to add, edit and delete customers using a web browser.
 
-<img alt="Example" title="Example" src="react-register/img/example.png" />
+<img alt="Example" title="Example" src="react-register/img/example.JPG" />
 
 <br />
 
